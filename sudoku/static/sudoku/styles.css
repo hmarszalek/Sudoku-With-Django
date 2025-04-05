@@ -1,6 +1,6 @@
 /* ========================= Root Variables ========================= */
 :root {
-    --board-size: min(70vh, 30vw);
+    --board-size: min(60vh, 30vw);
     --tile-size: calc(var(--board-size) / 9);
     --option-width: min(10vw, 100px);
     --option-height: var(--board-size);
@@ -19,7 +19,7 @@ body {
     color: #3E3E3E;
     text-align: center;
     touch-action: manipulation;
-    padding-top: 60px;
+    /* padding-top: 60px; */
     padding-bottom: 50px;
 }
 
@@ -75,7 +75,19 @@ nav a:hover {
 .container {
     width: 60%;
     max-width: 1000px;
-    width: calc(var(--board-size) * 2);
+    min-height: 400px;
+    margin: 0 auto;
+    padding: 30px 50px 50px 50px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+}
+
+#solve-sudoku-container {
+    width: 60%;
+    max-width: 1000px;
+    height: calc(var(--board-size) * 1.5);
     margin: 0 auto;
     padding: 30px 50px 50px 50px;
     background-color: white;
@@ -411,16 +423,13 @@ button:hover {
     cursor: pointer;
     opacity: 70%;
     color: rgb(94, 94, 94);
+    font-size: calc(var(--tile-size) * 0.3);
 }
 
 .special-button img {
-    width: calc( var(--tile-size) * 0.6);
-    height: calc( var(--tile-size) * 0.6);
+    width: calc( var(--tile-size) * 0.5);
+    height: calc( var(--tile-size) * 0.5);
     margin-bottom: 5px;
-}
-
-.special-button span {
-    font-size: 14px;
 }
 
 #special {

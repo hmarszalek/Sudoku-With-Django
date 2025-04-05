@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
+    <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
 </head>
 <body>
     <nav>
@@ -13,7 +14,7 @@
         <a href="{% url 'login' %}">Login</a>
     </nav>
 
-    <div class="container">
+    <div class="container" id="register-container">
         <h1>Register</h1>
         <form method="POST">
             {% csrf_token %}
@@ -39,6 +40,8 @@
 
             <button type="submit">Register</button>
         </form>
+
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
     </div>
 </body>
 </html>

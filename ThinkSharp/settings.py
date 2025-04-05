@@ -126,14 +126,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # MINE FOR HOSTING ON RADAR
 import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 SECRET_KEY = os.environ.get('SECRET_KEY', 'unsafe-secret-key')
 
-ALLOWED_HOSTS = ['.onrender.com']  # Or ['*'] for now
+ALLOWED_HOSTS = ['.onrender.com']
 
 # Static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'sudoku/static')]  # if needed
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'sudoku/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

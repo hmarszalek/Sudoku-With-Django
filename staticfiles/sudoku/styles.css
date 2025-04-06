@@ -236,7 +236,7 @@ form button:hover {
 }
 
 /* ========================= Sudoku Board Grid ========================= */
-#board, #solution {
+.board, .solution {
     width: var(--board-size);
     height: var(--board-size);
     margin: 20px auto;
@@ -245,7 +245,7 @@ form button:hover {
     grid-gap: 0;
 }
 
-#solution {
+.solution {
     display: none;
 }
 
@@ -432,6 +432,11 @@ button:hover {
     margin-bottom: 5px;
 }
 
+.special-button:hover {
+    background-color: inherit;
+    color: inherit;
+}
+
 #special {
     width: var(--option-width);
     margin: 10px auto;
@@ -551,7 +556,7 @@ input:checked + .slider:before {
     h2 { font-size: 24px; }
     h3 { font-size: 20px; }
     
-    #board, #solution { width: 300px; height: 300px; }
+    .board, .solution { width: 300px; height: 300px; }
     .tile { width: 32px; height: 32px; font-size: 16px; }
     .new-game-btn { width: 70%; }
 

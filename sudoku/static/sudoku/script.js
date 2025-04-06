@@ -32,12 +32,12 @@ window.onload = function() {
         newGame();
     }
 
-    // Delete later
-    const newGameTempBtn = document.getElementById('temp'); 
-    newGameTempBtn.addEventListener('click', function() {
-        difficultyLevel = 3;
-        newGame();
-    });
+    // // Delete later
+    // const newGameTempBtn = document.getElementById('temp'); 
+    // newGameTempBtn.addEventListener('click', function() {
+    //     difficultyLevel = 3;
+    //     newGame();
+    // });
 
     // New game buttons
     const newGameEasyBtn = document.getElementById('easy');
@@ -52,10 +52,10 @@ window.onload = function() {
         difficultyLevel = 1;
         newGame()
     });
-    // newGameHardBtn.addEventListener('click', function() {
-    //     difficultyLevel = 2;
-    //     newGame();
-    // });
+    newGameHardBtn.addEventListener('click', function() {
+        difficultyLevel = 2;
+        newGame();
+    });
     newGamePopupBtn.addEventListener('click', function() {
         closePopup();
         newGame();

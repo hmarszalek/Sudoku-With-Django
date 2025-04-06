@@ -12,6 +12,7 @@ let digitUsage = new Array(10);
 var unfilledTiles = [];
 var solution;
 var board;
+var startingBoard;
 var hintCnt;
 var difficultyLevel = 0;
 
@@ -31,12 +32,12 @@ window.onload = function() {
         newGame();
     }
 
-    // // Delete later
-    // const newGameTempBtn = document.getElementById('temp'); 
-    // newGameTempBtn.addEventListener('click', function() {
-    //     difficultyLevel = 3;
-    //     newGame();
-    // });
+    // Delete later
+    const newGameTempBtn = document.getElementById('temp'); 
+    newGameTempBtn.addEventListener('click', function() {
+        difficultyLevel = 3;
+        newGame();
+    });
 
     // New game buttons
     const newGameEasyBtn = document.getElementById('easy');
@@ -51,10 +52,10 @@ window.onload = function() {
         difficultyLevel = 1;
         newGame()
     });
-    newGameHardBtn.addEventListener('click', function() {
-        difficultyLevel = 2;
-        newGame();
-    });
+    // newGameHardBtn.addEventListener('click', function() {
+    //     difficultyLevel = 2;
+    //     newGame();
+    // });
     newGamePopupBtn.addEventListener('click', function() {
         closePopup();
         newGame();
@@ -117,7 +118,7 @@ window.onload = function() {
         let r = parseInt(coords[0]);
         let c = parseInt(coords[1]);
         
-        if(hintTile.innerText === solution[r][c]) {
+        if(hintTile.innerText === parseInt(solution[r][c])) {
             return;
         }
 
@@ -156,6 +157,7 @@ window.onload = function() {
 
     // Finished the game
     document.addEventListener('gameWon', function() {
+        sendSolvedSudoku();
         openPopup();
     });
 
@@ -163,6 +165,33 @@ window.onload = function() {
     const closeButton = document.querySelector('.close');
     closeButton.addEventListener('click', function() {
         closePopup();
+    });
+}
+
+function sendSolvedSudoku() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    const dataToSend = {
+        name: 'Sudoku #' + Date.now(),
+        board: startingBoard,
+        solution: solution,
+        time: document.getElementById("clock").innerText
+    };
+
+    fetch('/solve_sudoku/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Saved successfully!', data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 }
 
@@ -288,6 +317,7 @@ function newGame() {
     let sudoku = new Sudoku(removedDigits)
     solution = sudoku.solution;
     board = sudoku.board;
+    startingBoard = sudoku.startingBoard;
     
     deselectAll();  // Deselect selected elements
     resetTimer(); // Set the game timer
@@ -340,6 +370,7 @@ function newGame() {
     }
 
     digitsLeft = removedDigits;
+    console.log(startingBoard);
 }
 
 // ------------------------------------ Tile and number logic --------------------------------
@@ -446,7 +477,7 @@ function addNewDigit(row, col, number, tile) {
     digitUsage[number]++;
     board[row][col] = number;
 
-    if(number.toString() === solution[row][col]) {
+    if(number.toString() === solution[row][col].toString()) {
         unfilledTiles.splice(unfilledTiles.indexOf(tile), 1);
     } else if(unfilledTiles.indexOf(tile) === -1) {
         unfilledTiles.push(tile);
@@ -523,11 +554,11 @@ function updateDigitUsageClasses() {
 
 // Maybe fix the comparison?
 function boardFilledUp() {
-    const solutionNumbers = solution.map(row => row.split('').map(Number));
+    // const solutionNumbers = solution.map(row => row.split('').map(Number));
     for (let i = 0; i < BOARD_SIZE; i++) {
         for (let j = 0; j < BOARD_SIZE; j++) {
-            if (board[i][j] !== solutionNumbers[i][j]) {
-                console.log(`Mismatch at row ${i}, col ${j}: board=${board[i][j]}, solution=${solutionNumbers[i][j]}`);
+            if (board[i][j] !== solution[i][j]) {
+                console.log(`Mismatch at row ${i}, col ${j}: board=${board[i][j]}, solution=${solution[i][j]}`);
                 return;
             }
         }
@@ -694,12 +725,21 @@ class Sudoku {
         this.removedDigits = removedDigits;
         this.board = Array.from({ length: BOARD_SIZE }, () => new Array(BOARD_SIZE).fill(0))
         this.solution = Array(BOARD_SIZE);
+        this.temp = Array(BOARD_SIZE);
 
         this.fillSudoku();
         for(let i = 0; i < BOARD_SIZE; i++) {
-            this.solution[i] = (this.board[i]).join('');
+            this.temp[i] = (this.board[i]).join('');
         }
+        this.solution = Array.from({ length: BOARD_SIZE }, () => new Array(BOARD_SIZE).fill(0));
+        this.solution = this.board.map(row => row.map(num => parseInt(num)));
+
         this.removeDigits();
+        for(let i = 0; i < BOARD_SIZE; i++) {
+            this.temp[i] = (this.board[i]).join('');
+        }
+        this.startingBoard = Array.from({ length: BOARD_SIZE }, () => new Array(BOARD_SIZE).fill(0));
+        this.startingBoard = this.board.map(row => row.map(num => parseInt(num)));
     }
 
     fillSudoku() {

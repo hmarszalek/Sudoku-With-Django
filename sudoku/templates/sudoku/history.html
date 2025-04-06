@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the homepage!</title>
+    <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
+    <script src="{% static 'sudoku/history_script.js' %}"></script>
+    <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
+</head>
+<body>
+    <nav>
+        {% if user.is_authenticated %}
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'solve_sudoku' %}">Solve Sudoku</a>
+            <a href="{% url 'logout' %}">Log Out</a>
+        {% else %}
+            <a href="{% url 'login' %}">Log In</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </nav>
+
+    <div class="container" id="history-container">
+        <h1>Your Solved Sudokus</h1>
+        <ul>
+            {% for sudoku in solved_puzzles %}
+                <li>
+                    <strong>{{ sudoku.name }}</strong>
+                    <p>Solved on {{ sudoku.date_solved }} in {{ sudoku.time }}</p>
+                    <div class="history-sudoku" data-board="{{ sudoku.board|escapejs }}" data-solution="{{ sudoku.solution|escapejs }}" data-name="{{ sudoku.name }}">
+                        <div class="board" id="board{{ sudoku.name }}"></div>
+                    </div>
+                </li>
+            {% empty %}
+                <li>No solved puzzles yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

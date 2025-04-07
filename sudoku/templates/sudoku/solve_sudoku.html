@@ -20,6 +20,9 @@
     </nav>
 
     <div class="container" id="solve-sudoku-container" class="prevent-text-select">
+        <button id="options-toggle" aria-label="Open options menu">
+            <img id="menu-icon" src="{% static 'sudoku/images/menu.png' %}" alt="Menu">
+        </button>
         <div id="clock-container" class="prevent-text-select">
             <div id="clock-box">
                 <span id="clock">00:00</span>
@@ -31,25 +34,18 @@
         </div>
 
         <div id="sudoku-container">
-                <div id="title">
-                    <h1>Sudoku</h1>
-                    <button id="options-toggle" aria-label="Open options menu">
-                        <img id="menu-icon" src="{% static 'sudoku/images/menu.png' %}" alt="Menu">
-                    </button>
-                </div>
+            <div id="title">
+                <h1>Sudoku</h1>
+            </div>
             <div id="sudoku-board">
 
-                <div class="board" id="board"></div>
-                <div class="solution" id="solution"></div>
-                <div class="pause-screen" id="pause-screen"><h2>Game Paused</h2></div>
-                
-                
-                <!-- <br> -->
+                <div id="board"></div>
+                <div id="solution"></div>
+                <div id="pause-screen"><h2>Game Paused</h2></div>
 
                 <div id="numbers"></div>
                 <div id="notes"></div>
                 <br>
-
 
                 <form method="POST" style="display: none;">
                     {% csrf_token %}
@@ -59,7 +55,7 @@
 
 
         <div id="options" class="prevent-text-select open">
-            <h2>New Game</h2>
+            <h3>New Game</h3>
             <div id="difficulty">
                 <button class="new-game-btn" id="easy">Easy</button><br>
                 <button class="new-game-btn" id="medium">Medium</button><br>
@@ -68,13 +64,22 @@
             </div>
 
             <div id="game-options">
-                <h2>Options</h2>
-                <div class="toggle-container">
-                    <label class="toggle-label" for="timer-switch">Timer:</label>
-                    <label class="switch">
-                        <input type="checkbox" id="timer-switch" checked>
-                        <span class="slider"></span>
-                    </label>
+                <h3>Options</h3>
+                <div class="options-onoff">
+                    <div class="toggle-container" id="timer-switch-container">
+                        <label class="toggle-label" for="timer-switch">Timer:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="timer-switch" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-container" id="special-switch-container">
+                        <label class="toggle-label" for="special-switch">Special:</label>
+                        <label class="switch">
+                            <input type="checkbox" id="special-switch" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <div id="special">
@@ -97,7 +102,6 @@
                 </div>
                 
                 <!-- <button class="new-game-btn" id="special-btns">Special</button> -->
-                <!-- <button onclick="alert('Button works!')">Test Button</button> -->
             </div>
         </div>
     </div>
@@ -105,7 +109,7 @@
     <div id="myPopup" class="popup">
         <div class="popup-content">
             <span class="close">&times;</span>
-            <h1 class="popup-title">🎉 You Won! 🎉</h1>
+            <h1 class="popup-title">You Won!</h1>
             <p class="popup-message">Congratulations! You completed the Sudoku puzzle.</p>
             <div class="popup-stats">
                 <span class="time-played">⏳ Time: 00:00</span>

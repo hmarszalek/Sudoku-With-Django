@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to the homepage!</title>
+    <title>Solved Sudokus</title>
+    <link rel="stylesheet" href="{% static 'sudoku/history_styles.css' %}">
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
     <script src="{% static 'sudoku/history_script.js' %}"></script>
     <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
@@ -22,20 +23,22 @@
     </nav>
 
     <div class="container" id="history-container">
-        <h1>Your Solved Sudokus</h1>
-        <ul>
+        <h1>Solved Sudokus</h1>
+        <div class="history-grid">
             {% for sudoku in solved_puzzles %}
-                <li>
-                    <strong>{{ sudoku.name }}</strong>
-                    <p>Solved on {{ sudoku.date_solved }} in {{ sudoku.time }}</p>
-                    <div class="history-sudoku" data-board="{{ sudoku.board|escapejs }}" data-solution="{{ sudoku.solution|escapejs }}" data-name="{{ sudoku.name }}">
-                        <div class="board" id="board{{ sudoku.name }}"></div>
-                    </div>
-                </li>
+            <div class="history-card" data-board="{{ sudoku.board|escapejs }}" data-solution="{{ sudoku.solution|escapejs }}" data-name="{{ sudoku.name }}">
+                <h3 class="sudoku-name">{{ sudoku.name }}</h3>
+                <p class="sudoku-meta">
+                    <span>🕒 {{ sudoku.time }}</span> • 
+                    <span>📅 {{ sudoku.date_solved }}</span>
+                </p>
+                <div class="board-preview" id="board{{ sudoku.name }}"></div>
+                <button class="view-btn">View Puzzle</button>
+            </div>
             {% empty %}
-                <li>No solved puzzles yet.</li>
+            <p>No solved puzzles yet. Play a game and come back here!</p>
             {% endfor %}
-        </ul>
+        </div>
     </div>
 </body>
 </html>

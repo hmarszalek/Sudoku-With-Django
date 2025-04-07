@@ -22,12 +22,10 @@ var BOARD_SIZE = 9;
 var BOX_SIZE = 3;
 
 window.onload = function() {
-    prepareBoard();
     if(isMobile) {
         isGamePaused = true;
-        document.getElementById('sudoku-container').classList.add('paused');
-        // toggleMenu();
     }
+    prepareBoard();
     if (!isMobile) {
         newGame();
     }
@@ -68,10 +66,10 @@ window.onload = function() {
     });
 
     // --- Special buttons ---
-    // const specialSwitch = document.getElementById('special-switch');
-    // specialSwitch.addEventListener("change", function() {
-    //     document.getElementById('special').classList.toggle('show');
-    // });
+    const specialSwitch = document.getElementById('special-switch');
+    specialSwitch.addEventListener("change", function() {
+        document.getElementById('special').classList.toggle('show');
+    });
 
     // Erase button
     const eraseButton = document.getElementById('erase-btn');
@@ -199,7 +197,8 @@ function toggleMenu() {
     console.log("toggle menu");
     document.getElementById('options').classList.toggle('resumed');
     document.getElementById('options-toggle').classList.toggle('resumed');
-    document.getElementById('sudoku-container').classList.toggle('paused');
+    document.getElementById('sudoku-container').classList.toggle('resumed');
+    document.getElementById('special').classList.toggle('show');
     pauseResume();
 }
 
@@ -282,6 +281,18 @@ function prepareBoard() {
             document.getElementById("solution").appendChild(tile);
         }
     }
+
+
+    if (isMobile) {
+        // Move the special element to the end of the board
+        const special = document.getElementById("special");
+        const sudokuBoard = document.getElementById("sudoku-board");
+        const pauseScreen = document.getElementById("pause-screen");
+
+        if (special && sudokuBoard && pauseScreen) {
+            sudokuBoard.insertBefore(special, pauseScreen.nextSibling);
+        }
+    }
 }
 
 function newGame() {
@@ -289,6 +300,7 @@ function newGame() {
     if(isMobile) {
         toggleMenu();
         console.log("mobile");
+        document.getElementById('sudoku-container').classList.add('resumed');
         document.getElementById('options-toggle').classList.add('activated');
     }
     

@@ -6,7 +6,7 @@ var BOARD_SIZE = 9;
 var BOX_SIZE = 3;
 
 window.onload = function() {
-    document.querySelectorAll('.history-sudoku').forEach(function(container) {
+    document.querySelectorAll('.history-card').forEach(function(container) {
         sname = container.getAttribute('data-name');
         board = JSON.parse(container.getAttribute('data-board'));
         solution = JSON.parse(container.getAttribute('data-solution'));

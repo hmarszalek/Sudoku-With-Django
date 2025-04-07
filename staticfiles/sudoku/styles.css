@@ -37,7 +37,7 @@ h1, h2, h3 {
 
 h1 { font-size: 36px; margin-bottom: 20px; }
 h2 { font-size: 28px; margin-bottom: 15px; }
-h3 { font-size: 22px; margin-bottom: 10px; }
+h3 { font-size: 19px; margin-bottom: 10px; }
 
 /* ========================= Links Styling ========================= */
 a {
@@ -103,10 +103,6 @@ nav a:hover {
     justify-content: center;
 }
 
-#sudoku-container h1 {
-    font-size: calc(var(--tile-size) * 0.8);
-}
-
 /* ========================= Form Styles ========================= */
 form {
     background-color: #fff;
@@ -156,11 +152,7 @@ form button:hover {
     margin-top: calc(min(calc(var(--tile-size) * 1.0), 100px) + 20px);
     text-align: center;
     justify-content: center;
-    font-size: calc(var(--tile-size) * 0.4);
-}
-
-#options h2 {
-    font-size: calc(var(--option-width) * 0.19);
+    /* font-size: calc(var(--tile-size) * 0.4); */
 }
 
 /* ========================= Clock & Pause Button ========================= */
@@ -236,7 +228,7 @@ form button:hover {
 }
 
 /* ========================= Sudoku Board Grid ========================= */
-.board, .solution {
+#board, #solution {
     width: var(--board-size);
     height: var(--board-size);
     margin: 20px auto;
@@ -245,7 +237,7 @@ form button:hover {
     grid-gap: 0;
 }
 
-.solution {
+#solution {
     display: none;
 }
 
@@ -266,14 +258,14 @@ form button:hover {
     width: var(--tile-size);
     height: var(--tile-size);
     border: 1px solid lightgray;
-    font-size: calc(var(--tile-size) * 0.4);
+    /* font-size: calc(var(--tile-size) * 0.4); */
     font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.start-tile { background-color: whitesmoke; }
+.start-tile { background-color: rgb(238, 238, 238); }
 .tile-selected { background-color: gray; }
 
 /* ========================= Numbers ========================= */
@@ -450,6 +442,8 @@ button:hover {
 #special.show {
     display: flex;
 }
+
+#special-switch-container { display: none; }
   
 .special-button.number-selected {
     opacity: 100%;
@@ -550,66 +544,168 @@ input:checked + .slider:before {
 
 /* ========================= Mobile Styles ========================= */
 @media only screen and (max-width: 768px) {
-    .container { width: 95%; padding: 20px; }
-    nav { font-size: 16px; }
+    :root {
+        --board-size: 70vw;
+        --tile-size: calc(var(--board-size) / 9);
+        --option-width: 90vw;
+        --option-height: var(--board-size);
+    }
+
+    nav {
+        padding: 10px;
+        font-size: 14px;
+        /* border-radius: 0; */
+        /* margin-top: 50px; */
+    }
+
+    .container {
+        width: 95vw;
+        min-height: 85vh;
+        padding: 20px;
+    }
+
+    #solve-sudoku-container {
+        width: 95vw;
+        padding: 20px;
+    }
+
+    #sudoku-container { display: none; }
+    #special-switch-container { display: block; }
+
     h1 { font-size: 28px; }
     h2 { font-size: 24px; }
     h3 { font-size: 20px; }
-    
-    .board, .solution { width: 300px; height: 300px; }
-    .tile { width: 32px; height: 32px; font-size: 16px; }
-    .new-game-btn { width: 70%; }
 
-    
-    #play-icon.paused { display: none; }
-    #pause-icon { display: none; }
-    #menu-icon, #close-icon { display: block; }
-
-    #sudoku-board { margin: 0 auto; }
-    
-    /* Hide the options menu by default */
-    #options {
-        width: 95%; 
-        margin: 0 auto;
-        padding: 20px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        display: block;
-        justify-content: center;
+    #board, #solution {
+        width: var(--board-size);
+        height: var(--board-size);
     }
 
-    /* Add a toggle button to open/close the options menu */
-    #options-toggle {
-        position: absolute;
-        top: 80px;
-        right: 10px;
-        z-index: 1;
-        cursor: pointer;
-        background: none;
-        border: none;
+    .tile {
+        width: var(--tile-size);
+        height: var(--tile-size);
+    }
+
+    #numbers {
+        width: var(--board-size);
+        height: calc(var(--tile-size) * 0.9);
+    }
+
+    #options {
+        margin: 0 auto;
+        display: block;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    #difficulty {
+        height: 60%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .new-game-btn {
+        width: 50%;
+        height: 25%;
+        font-size: 12px;
+    }
+    
+    #game-options {
+        height: 40%;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .options-onoff {
+        margin: 10px auto;
+        display: block;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        /* grid-template-columns: repeat(2, 1fr); */
+        gap: 10px;
+        justify-items: center;
+        align-items: center;
+    }
+
+    #options.resumed {
         display: none;
     }
 
-    #options-toggle.resumed {
-        top: 115px;
-        right: 20px;
+    #options-toggle {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: none;
+        border: none;
     }
 
     #options-toggle.activated {
         display: block;
     }
 
-    #sudoku-container.paused {
-        display: none;
+    #sudoku-container.resumed {
+        display: block;
+    }
+
+    #special.resumed {
+        display: block;
     }
 
     #menu-icon { 
-        width: 35px;
-        height: 35px;
+        width: 30px;
+        height: 30px;
     }
-}
 
-@media only screen and (min-width: 480px) and (max-width: 768px) {
-    .new-game-btn { width: 400px; }
+    #sudoku-container {
+        width: 100%;
+    }
+
+    #clock-container {
+        width: 70px;
+        height: 20px !important;
+        position: absolute;
+        top: 5px;
+        left: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #clock {
+        font-size: 16px;
+    }
+
+    #special {
+        width: 100%;
+        display: none;
+        /* flex-wrap: wrap;
+        gap: 10px; */
+    }
+
+    #special.show {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .special-button {
+        font-size: 12px;
+    }
+
+    .special-button img {
+        width: 25px;
+        height: 25px;
+        margin-bottom: 5px;
+    }
+
+    .popup {
+        width: 300px;
+    }
+
+    #play-icon.paused, #play-icon.resumed { display: none; }
+    #pause-icon, #pause-icon.paused, #pause-icon.resumed { display: none; }
+    #menu-icon, #close-icon { display: block; }
 }

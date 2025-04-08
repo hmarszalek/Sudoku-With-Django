@@ -54,10 +54,24 @@ nav {
     background-color: #FF6F61;
     color: white;
     padding: 15px;
-    text-align: center;
+    /* text-align: center; */
     font-size: 18px;
     border-radius: 0 0 20px 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+}
+
+.nav-center {
+    display: flex;
+    gap: 30px;
+    margin: 0 auto;
 }
 
 nav a {
@@ -65,11 +79,16 @@ nav a {
     margin: 0 20px;
     font-weight: 500;
     transition: color 0.3s ease;
+    white-space: nowrap;
 }
 
 nav a:hover {
     color: #F5A623;
 }
+
+/* nav .settings-link {
+    margin-left: auto;
+} */
 
 /* ========================= Container Styles ========================= */
 .container {
@@ -560,7 +579,7 @@ input:checked + .slider:before {
 
     .container {
         width: 95vw;
-        min-height: 85vh;
+        min-height: 90vh;
         padding: 20px;
     }
 
@@ -604,6 +623,7 @@ input:checked + .slider:before {
         margin: auto;
         justify-content: center;
         align-items: center;
+        margin-left: 0;
     }
 
     .new-game-btn {

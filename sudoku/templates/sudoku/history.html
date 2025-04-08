@@ -7,15 +7,21 @@
     <title>Solved Sudokus</title>
     <link rel="stylesheet" href="{% static 'sudoku/history_styles.css' %}">
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
-    <script src="{% static 'sudoku/history_script.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script type="module" src="{% static 'sudoku/scripts/script.js' %}"></script>
     <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
 </head>
 <body>
     <nav>
         {% if user.is_authenticated %}
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'solve_sudoku' %}">Solve Sudoku</a>
-            <a href="{% url 'logout' %}">Log Out</a>
+            <div class="nav-container">
+                <div class="nav-center">
+                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'solve_sudoku' %}">Solve Sudoku</a>
+                    <a href="{% url 'logout' %}">Log Out</a>
+                </div>
+                <a href="{% url 'settings' %}" id="settings-link" class="settings-link"><i class="fas fa-gear"></i></a>
+            </div>
         {% else %}
             <a href="{% url 'login' %}">Log In</a>
             <a href="{% url 'register' %}">Register</a>
@@ -28,6 +34,7 @@
             {% for sudoku in solved_puzzles %}
             <div class="history-card" data-board="{{ sudoku.board|escapejs }}" data-solution="{{ sudoku.solution|escapejs }}" data-name="{{ sudoku.name }}">
                 <h3 class="sudoku-name">{{ sudoku.name }}</h3>
+                <a href="{% url 'remove_sudoku' sudoku.id %}" class="delete-sudoku-btn"><i class="fas fa-trash"></i></a>
                 <p class="sudoku-meta">
                     <span>🕒 {{ sudoku.time }}</span> • 
                     <span>📅 {{ sudoku.date_solved }}</span>

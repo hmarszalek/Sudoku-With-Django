@@ -67,3 +67,13 @@ def solve_sudoku(request):
 def sudoku_history(request):
     solved = SolvedSudoku.objects.filter(user=request.user).order_by("-date_solved")
     return render(request, "sudoku/history.html", {"solved_puzzles": solved})
+
+@login_required
+def remove_sudoku(request, sudoku_id):
+    sudoku = get_object_or_404(SolvedSudoku, id=sudoku_id, user=request.user)
+    sudoku.delete()  # Delete the Sudoku from the database
+    return redirect('history')  # Redirect back to the history page
+
+@login_required
+def settings(request):
+    return render(request, "sudoku/settings.html")

@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import home, register_view, login_view, logout_view, solve_sudoku, sudoku_history
+from .views import home, register_view, login_view, logout_view, solve_sudoku, sudoku_history, settings
 
 urlpatterns = [
     path("", home, name="home"),
@@ -9,4 +9,6 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("solve_sudoku/", solve_sudoku, name="solve_sudoku"),
     path("history/", sudoku_history, name="history"),
+    path('remove_sudoku/<int:sudoku_id>/', views.remove_sudoku, name='remove_sudoku'),
+    path("settings/", settings, name="settings"),
 ]

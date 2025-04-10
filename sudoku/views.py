@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_duration
 from datetime import timedelta
 from django.http import JsonResponse
-from .forms import RegisterForm
+from .forms import RegisterForm, ChangeUsernameForm
 from .models import SolvedSudoku
 import json
 from django.utils.timezone import now
@@ -77,3 +77,49 @@ def remove_sudoku(request, sudoku_id):
 @login_required
 def settings(request):
     return render(request, "sudoku/settings.html")
+
+@login_required
+def change_username(request):
+    if request.method == 'POST':
+        form = ChangeUsernameForm(request.POST)
+        if form.is_valid():
+            new_username = form.cleaned_data['new_username']
+
+            # Update the username (ensure it's unique and valid)
+            user = request.user
+            user.username = new_username
+            user.save()
+
+            return redirect('change_username_done')
+    else:
+        form = ChangeUsernameForm()
+
+    return render(request, 'settings/change_username.html', {'form': form})
+
+@login_required
+def change_username_done(request):
+    return render(request, 'settings/change_username_done.html')
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+
+            # Keeps user logged in after password change
+            update_session_auth_hash(request, user)
+            return redirect('change_password_done')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'settings/change_password.html', {'form': form})
+
+@login_required
+def change_password_done(request):
+    return render(request, 'settings/change_password_done.html')
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('home')

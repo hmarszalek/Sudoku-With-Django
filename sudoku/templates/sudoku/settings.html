@@ -10,20 +10,53 @@
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
-    <script src="{% static 'sudoku/settings_script.js' %}"></script>
+    <script type="module" src="{% static 'sudoku/scripts/script.js' %}"></script>
 </head>
 
 <body>
     <nav>
         <div class="nav-container">
             <div class="nav-center"></div>
-            <a href="{% url 'settings' %}" id="settings-link" class="settings-link"><i class="fas fa-gear"></i></a>
+            <a href="{% url 'settings' %}" id="settings-gear" class="settings-gear"><i class="fas fa-gear"></i></a>
         </div>
     </nav>
 
-    <div class="container" id="settings-container" class="prevent-text-select">
-        <h1>Settings</h1>
-        Work in progress...
+    <div class="container" id="settings-container">
+        <h1>Account Settings</h1>
+
+        <!-- Logout Section -->
+        <div class="logout-section">
+            <a href="{% url 'logout' %}" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+            </a>
+        </div>
+        
+        <div class="settings-section">
+            <h2>Manage Account</h2>
+
+            <!-- Account Options -->
+            <div class="account-options">
+                <p>Manage your account settings and preferences here.</p>
+                
+                <!-- Change Username Link -->
+                <a href="{% url 'change_username' %}" class="settings-link">
+                    <i class="fas fa-user-edit"></i> Change Username
+                </a>
+
+                <!-- Change Password Link -->
+                <a href="{% url 'change_password' %}" class="settings-link">
+                    <i class="fas fa-key"></i> Change Password
+                </a>
+
+                <!-- Delete Account Form -->
+                <form action="{% url 'delete_account' %}" method="post" class="delete-account-form" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-account-btn">
+                        <i class="fas fa-user-slash"></i> Delete Account
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 

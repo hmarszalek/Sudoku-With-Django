@@ -1,8 +1,9 @@
-import { resetTimer, isGamePaused, isGameOver, GameOver } from './timer.js';
+import { resetTimer, isGamePaused, isGameOver, toggleMenu, GameOver } from './timer.js';
 import { Sudoku, digitUsage } from './sudoku.js';
 import { closePopup } from './popup.js'
 
 var board;
+var difficultyLevel = 0;
 export var startingBoard;
 export var solution;
 export var numSelected = null;
@@ -15,16 +16,58 @@ var isSolutionVisible = false;
 const isMobile = window.screen.width <= 768;
 const BOARD_SIZE = 9;
 
+// ----------------- New Game Buttons --------------------
+// Delete later
+const newGameTempBtn = document.getElementById('temp'); 
+if (newGameTempBtn) {
+    newGameTempBtn.addEventListener('click', function() {
+        difficultyLevel = 3;
+        newGame(difficultyLevel);
+    });
+}
+
+// New game buttons
+const newGameEasyBtn = document.getElementById('easy');
+if (newGameEasyBtn) {
+    newGameEasyBtn.addEventListener('click', function() {
+        difficultyLevel = 0;
+        newGame(difficultyLevel);
+    });
+}
+
+const newGameMediumBtn = document.getElementById('medium');
+if (newGameMediumBtn) {
+    newGameMediumBtn.addEventListener('click', function() {
+        difficultyLevel = 1;
+        newGame(difficultyLevel);
+    });
+}
+
+// const newGameHardBtn = document.getElementById('hard');
+// if (newGameHardBtn) {
+//     newGameHardBtn.addEventListener('click', function() {
+//         difficultyLevel = 2;
+//         newGame();
+//     });
+// }
+// -------------------------------------------------------
+
+const newGamePopupBtn = document.getElementById('new-game-popup');
+if (newGamePopupBtn) {
+    newGamePopupBtn.addEventListener('click', function() {
+        newGame(difficultyLevel);
+    });
+}
+
 export function newGame(difficultyLevel) {
     // If popup is open, close it
     closePopup();
 
-    // console.log("new game");
-    if(isMobile) {
+    // When on mobile make sure menu is closed at the beginning on new game
+    if(isMobile && !document.getElementById('sudoku-container').classList.contains('resumed')) {
         toggleMenu();
-        // console.log("mobile");
         document.getElementById('sudoku-container').classList.add('resumed');
-        document.getElementById('options-toggle').classList.add('activated');
+        document.getElementById('options-toggle-btn').classList.add('activated');
     }
     
     // Set removedDigits based on difficulty level
@@ -59,11 +102,6 @@ export function newGame(difficultyLevel) {
     resetTimer(); // Set the game timer
     hintCnt = 0;
 
-    // if(isMobile) {
-    //     pauseGame();
-    // }
-
-    // console.log(digitUsage);
     updateDigitUsageClasses();
 
     // Unfilled tiles
@@ -72,7 +110,6 @@ export function newGame(difficultyLevel) {
         for(let c = 0; c < BOARD_SIZE; c++) {
             let tile = board[r][c];
             if(board[r][c] === 0) {
-                // console.log("unfilled tile " + r + ", " + c);
                 unfilledTiles.push(document.getElementById(r.toString() + ":" + c.toString()));
             }
         }
@@ -82,9 +119,7 @@ export function newGame(difficultyLevel) {
     for(let r = 0; r < BOARD_SIZE; r++) {
         for(let c = 0; c < BOARD_SIZE; c++) {
             let tile = document.getElementById(r.toString() + ":" + c.toString());
-            // console.log(document.getElementById("8:8:9"));
             tile.innerHTML = "";
-            // console.log(document.getElementById("8:8:9"));
             tile.classList.remove("start-tile");
             if(board[r][c] != 0) {
                 tile.innerText = board[r][c];

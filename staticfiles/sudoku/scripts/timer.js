@@ -3,8 +3,8 @@ import { openPopup } from "./popup.js";
 import { sendSolvedSudoku } from "./script.js";
 
 var startTime;
-export var isGamePaused = false;
-export var isGameOver = true;
+export var isGamePaused = true;
+export var isGameOver = false;
 var timePlayed;
 var pauseTime = 0;
 const isMobile = window.screen.width <= 768;
@@ -149,6 +149,24 @@ function hidePauseScreen() {
     boardArray.style.display = 'grid';
     pauseScreen.style.display = 'none';
 }
+
+// -------------------- Toggle Menu ------------------------
+// Toggle menu button
+const optionsToggle = document.getElementById('options-toggle-btn');
+if (optionsToggle) {
+    optionsToggle.addEventListener('click', function() {
+        toggleMenu();
+    });
+}
+
+export function toggleMenu() {
+    document.getElementById('options').classList.toggle('resumed');
+    document.getElementById('options-toggle-btn').classList.toggle('resumed');
+    document.getElementById('sudoku-container').classList.toggle('resumed');
+    document.getElementById('special').classList.toggle('show');
+    pauseResume();
+}
+// ---------------------------------------------------------
 
 export function GameOver() {
     isGameOver = true;

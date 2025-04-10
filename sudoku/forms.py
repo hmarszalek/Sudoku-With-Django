@@ -23,3 +23,6 @@ class RegisterForm(UserCreationForm):
             raise forms.ValidationError("Passwords do not match.")
 
         return password2
+
+class ChangeUsernameForm(forms.Form):
+    new_username = forms.CharField(max_length=150, required=True)

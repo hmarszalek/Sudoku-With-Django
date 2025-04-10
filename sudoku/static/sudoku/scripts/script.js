@@ -1,8 +1,8 @@
-import { pauseResume, GameOver } from './timer.js';
+// import { isGamePaused } from './timer.js';
 import { prepareBoard } from './board.js';
 import { newGame, startingBoard, solution } from './gameplay.js';
 
-var difficultyLevel = 0;
+// var difficultyLevel = 0;
 const isMobile = window.screen.width <= 768;
 
 const currentPath = window.location.pathname;
@@ -17,6 +17,27 @@ window.onload = function() {
     if (isOnHistory) {
         historyPage();
     }
+
+    const settingsLink = document.getElementById('settings-gear');
+
+    // Store the previous page (if not on settings)
+    if (!window.location.pathname.includes('/settings')) {
+        sessionStorage.setItem('previousPage', window.location.pathname);
+    }
+
+    settingsLink?.addEventListener('click', function (e) {
+        console.log("settings link clicked");
+        const currentPath = window.location.pathname;
+        const isOnSettings = currentPath.includes('/settings');
+        const previousPage = sessionStorage.getItem('previousPage') || '/';
+
+        if (isOnSettings) {
+            e.preventDefault(); // Stop the default navigation
+            window.location.href = previousPage; // Go back
+        } else {
+            // Let it go to /settings normally
+        }
+    });
 }
 
 export function sendSolvedSudoku() {
@@ -49,54 +70,10 @@ export function sendSolvedSudoku() {
 // ------------------ Solve Sudoku ------------------------
 function solveSudokuPage() {
     console.log("solve sudoku page");
-    if(isMobile) {
-        isGamePaused = true;
-    }
     prepareBoard("board");
-    if (!isMobile) {
-        newGame(difficultyLevel);
+    if(!isMobile) {
+        newGame(0);
     }
-}
-
-// Delete later
-const newGameTempBtn = document.getElementById('temp'); 
-if (newGameTempBtn) {
-    newGameTempBtn.addEventListener('click', function() {
-        difficultyLevel = 3;
-        newGame(difficultyLevel);
-    });
-}
-
-// New game buttons
-const newGameEasyBtn = document.getElementById('easy');
-if (newGameEasyBtn) {
-    newGameEasyBtn.addEventListener('click', function() {
-        difficultyLevel = 0;
-        newGame(difficultyLevel);
-    });
-}
-
-const newGameMediumBtn = document.getElementById('medium');
-if (newGameMediumBtn) {
-    newGameMediumBtn.addEventListener('click', function() {
-        difficultyLevel = 1;
-        newGame(difficultyLevel);
-    });
-}
-
-// const newGameHardBtn = document.getElementById('hard');
-// if (newGameHardBtn) {
-//     newGameHardBtn.addEventListener('click', function() {
-//         difficultyLevel = 2;
-//         newGame();
-//     });
-// }
-
-const newGamePopupBtn = document.getElementById('new-game-popup');
-if (newGamePopupBtn) {
-    newGamePopupBtn.addEventListener('click', function() {
-        newGame(difficultyLevel);
-    });
 }
 
 // Timer Switch
@@ -115,13 +92,7 @@ if (specialSwitch) {
     });
 }
 
-// Toggle menu button
-const optionsToggle = document.getElementById('options-toggle');
-if (optionsToggle) {
-    optionsToggle.addEventListener('click', function() {
-        toggleMenu();
-    });
-}
+
 
 // // Finished the game
 // document.addEventListener('gameWon', function() {
@@ -182,34 +153,6 @@ async function deleteSudoku(sudokuId) {
 
 
 // ------------------ Settings page ------------------------
-const settingsLink = document.getElementById('settings-link');
+// should be on load - change to onload
 
-// Store the previous page (if not on settings)
-if (!window.location.pathname.includes('/settings')) {
-    sessionStorage.setItem('previousPage', window.location.pathname);
-}
-
-settingsLink?.addEventListener('click', function (e) {
-    console.log("settings link clicked");
-    const currentPath = window.location.pathname;
-    const isOnSettings = currentPath.includes('/settings');
-    const previousPage = sessionStorage.getItem('previousPage') || '/';
-
-    if (isOnSettings) {
-        e.preventDefault(); // Stop the default navigation
-        window.location.href = previousPage; // Go back
-    } else {
-        // Let it go to /settings normally
-    }
-});
 // ---------------------------------------------------------
-
-function toggleMenu() {
-    // console.log("toggle menu");
-    document.getElementById('options').classList.toggle('resumed');
-    document.getElementById('options-toggle').classList.toggle('resumed');
-    document.getElementById('sudoku-container').classList.toggle('resumed');
-    document.getElementById('special').classList.toggle('show');
-    pauseResume();
-}
-

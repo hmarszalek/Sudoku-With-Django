@@ -18,9 +18,9 @@
                 <div class="nav-center">
                     <a href="{% url 'home' %}">Home</a>
                     <a href="{% url 'solve_sudoku' %}">Solve Sudoku</a>
-                    <a href="{% url 'logout' %}">Log Out</a>
+                    <a href="{% url 'logout' %}" class="logout-link">Log Out</a>
                 </div>
-                <a href="{% url 'settings' %}" id="settings-link" class="settings-link"><i class="fas fa-gear"></i></a>
+                <a href="{% url 'settings' %}" id="settings-gear" class="settings-gear"><i class="fas fa-gear"></i></a>
             </div>
         {% else %}
             <a href="{% url 'login' %}">Log In</a>

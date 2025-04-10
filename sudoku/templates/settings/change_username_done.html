@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+<h2>Username Changed Successfully</h2>
+<p>Hi {{ user.username }}! Your username has been updated.</p>
+
+<a href="{% url 'settings' %}">Back to settings</a>
+<br>
+<a href="{% url 'home' %}">Back to homepage</a>
+{% endblock %}

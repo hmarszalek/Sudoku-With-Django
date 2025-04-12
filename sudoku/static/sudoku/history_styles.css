@@ -7,7 +7,7 @@
 
 .history-card {
     position: relative;
-    background: #fff;
+    background: var(--card-background);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     padding: 20px;
@@ -27,7 +27,7 @@
     height: 30px;
     top: 10px;
     right: 10px;
-    color: #FF6F61;
+    color: var(--theme-color);
     padding: 8px 12px;
     display: flex;
     align-items: center;
@@ -38,14 +38,14 @@
 
 .delete-sudoku-btn:hover {
     transform: scale(1.1);
-    color: rgb(249, 2, 2);
+    color: var(--theme-color-dark);
 }
 
 .sudoku-name {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #FF6F61;
+    color: var(--theme-color);
 }
 
 .sudoku-meta {
@@ -57,7 +57,7 @@
 .board-preview {
     width: 100%;
     aspect-ratio: 1;
-    border: 1px solid #eee;
+    border: 2px solid var(--box-border-color);
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     border-radius: 6px;
@@ -72,6 +72,12 @@
     border: 0.5px solid #ddd;
     height: 100%;
     width: 100%;
+    background-color: white;
+    color: #2A2A2A;
+}
+
+.board-preview .start-tile {
+    background-color: var(--tile-background);
 }
 
 .view-btn {

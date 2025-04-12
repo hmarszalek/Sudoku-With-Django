@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_duration
 from datetime import timedelta
@@ -12,7 +13,9 @@ import json
 from django.utils.timezone import now
 
 def home(request):
-    return render(request, "sudoku/home.html")
+    user_count = User.objects.count()
+    solved_count = SolvedSudoku.objects.count()
+    return render(request, "sudoku/home.html", {'user_count': user_count, 'solved_count': solved_count})
 
 def register_view(request):
     if request.method == "POST":

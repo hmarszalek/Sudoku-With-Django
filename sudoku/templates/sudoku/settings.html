@@ -3,11 +3,33 @@
 <html>
 
 <head>
+    <script>
+        (function () {
+            // Theme
+            const theme = localStorage.getItem("theme");
+            if (theme && theme !== "default") {
+                document.documentElement.setAttribute("data-theme", theme);
+            }
+
+            // Dark Mode
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let mode = localStorage.getItem('mode');
+            if (mode && mode !== "default") {
+                document.documentElement.setAttribute('data-mode', mode);
+            }
+            // else {
+            //     mode = prefersDark ? 'dark' : 'light';
+            // }
+            // document.documentElement.setAttribute('color-scheme', mode);
+        })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width initial-scale=1.0 user-scalable=no">
     <title>Sudoku</title>
 
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/settings_styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
     <script type="module" src="{% static 'sudoku/scripts/script.js' %}"></script>
@@ -31,30 +53,70 @@
             </a>
         </div>
         
+        <!-- Account Managment Section -->
         <div class="settings-section">
             <h2>Manage Account</h2>
-
-            <!-- Account Options -->
             <div class="account-options">
                 <p>Manage your account settings and preferences here.</p>
-                
-                <!-- Change Username Link -->
                 <a href="{% url 'change_username' %}" class="settings-link">
                     <i class="fas fa-user-edit"></i> Change Username
                 </a>
-
-                <!-- Change Password Link -->
                 <a href="{% url 'change_password' %}" class="settings-link">
                     <i class="fas fa-key"></i> Change Password
                 </a>
-
-                <!-- Delete Account Form -->
                 <form action="{% url 'delete_account' %}" method="post" class="delete-account-form" onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
                     {% csrf_token %}
                     <button type="submit" class="delete-account-btn">
                         <i class="fas fa-user-slash"></i> Delete Account
                     </button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Themes Section -->
+        <div class="settings-section">
+            <h2>Theme Settings</h2>
+            <p>Pick a theme that matches your vibe. Click to preview instantly.</p>
+
+            <div class="theme-carousel-wrapper">
+                <div class="theme-carousel" id="theme-carousel">
+                  <div class="theme-card pink" data-theme="pink" title="Pink"></div>
+                  <div class="theme-card blue" data-theme="blue" title="Blue"></div>
+                  <div class="theme-card green" data-theme="green" title="Green"></div>
+                  <div class="theme-card purple" data-theme="purple" title="Purple"></div>
+                  <div class="theme-card orange" data-theme="orange" title="Orange"></div>
+                  <div class="theme-card teal" data-theme="teal" title="Teal"></div>
+                  <div class="theme-card red" data-theme="red" title="Red"></div>
+                  <div class="theme-card gold" data-theme="gold" title="Gold"></div>
+                </div>
+            </div>
+
+            <button id="color-scheme-toggle">Switch to Dark Mode</button>
+        </div>
+
+        <div class="settings-section">
+            <h2>Gameplay</h2>
+            <p>Customize your gameplay experience.</p>
+            <div class="gameplay-options prevent-text-select">
+                <!-- Highlight row, column and box your current posistion itersects with -->
+                <label for="highlight-cells">
+                    <input type="checkbox" id="highlight-cells" unchecked>
+                    Highlight Cells
+                </label>
+                <!-- Highlight the selected number in the grid -->
+                <label for="highlight-numbers">
+                    <input type="checkbox" id="highlight-numbers" unchecked>
+                    Highlight Numbers
+                </label>
+                <!-- Dont let user put in wrong number -->
+                <label for="auto-check">
+                    <input type="checkbox" id="auto-check" checked>
+                    Auto-Check
+                </label>
+                <!-- <label for="auto-save">
+                    <input type="checkbox" id="auto-save" checked>
+                    Auto-Save
+                </label> -->
             </div>
         </div>
     </div>

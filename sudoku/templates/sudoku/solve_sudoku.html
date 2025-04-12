@@ -3,11 +3,29 @@
 <html>
 
 <head>
+    <script>
+        (function () {
+            // Theme
+            const theme = localStorage.getItem("theme");
+            if (theme && theme !== "default") {
+                document.documentElement.setAttribute("data-theme", theme);
+            }
+
+            // Dark Mode
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let mode = localStorage.getItem('mode');
+            if (mode && mode !== "default") {
+                document.documentElement.setAttribute('data-mode', mode);
+            }
+        })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width initial-scale=1.0 user-scalable=no">
     <title>Sudoku</title>
 
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/sudoku_styles.css' %}">
     <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script type="module" src="{% static 'sudoku/scripts/script.js' %}"></script>
@@ -35,8 +53,10 @@
                 <span id="clock">00:00</span>
             </div>
             <button type="button" id="pause-btn" class="resumed" aria-label="Pause game">
-                <img id="pause-icon" src="{% static 'sudoku/images/pause.png' %}" alt="Pause">
-                <img id="play-icon" class="resumed" src="{% static 'sudoku/images/play.png' %}" alt="Resume">
+                <i id="pause-icon" class="fas fa-pause"></i>
+                <i id="play-icon" class="fas fa-play resumed"></i>
+                <!-- <img id="pause-icon" src="{% static 'sudoku/images/pause.png' %}" alt="Pause">
+                <img id="play-icon" class="resumed" src="{% static 'sudoku/images/play.png' %}" alt="Resume"> -->
             </button>
         </div>
 
@@ -61,13 +81,13 @@
         </div>
 
 
-        <div id="options" class="prevent-text-select open">
+        <div id="options-container" class="prevent-text-select open">
             <h3>New Game</h3>
             <div id="difficulty">
                 <button class="new-game-btn" id="easy">Easy</button><br>
                 <button class="new-game-btn" id="medium">Medium</button><br>
-                <!-- <button class="new-game-btn" id="hard">Hard</button><br> -->
-                <button class="new-game-btn" id="temp">Temp</button>
+                <button class="new-game-btn" id="hard">Hard</button><br>
+                <!-- <button class="new-game-btn" id="temp">Temp</button> -->
             </div>
 
             <div id="game-options">
@@ -91,24 +111,22 @@
 
                 <div id="special">
                     <button class="special-button" id="solution-btn">
-                        <img class="icon" id="solution-icon" src="{% static 'sudoku/images/flag.png' %}">
+                        <i class="fas fa-flag icon" id="solution-icon"></i>
                         Solution
                     </button>
                     <button class="special-button" id="hint-btn">
-                        <img class="icon" id="hint-icon" src="{% static 'sudoku/images/light-bulb.png' %}">
+                        <i class="fas fa-lightbulb icon" id="hint-icon"></i>
                         Hint
                     </button>
                     <button class="special-button" id="erase-btn">
-                        <img class="icon" id="erase-icon" src="{% static 'sudoku/images/eraser.png' %}">
+                        <i class="fas fa-eraser icon" id="erase-icon"></i>
                         Erase
                     </button>
                     <button class="special-button" id="notes-btn">
-                        <img class="icon" id="notes-icon" src="{% static 'sudoku/images/pencil.png' %}">
+                        <i class="fas fa-pencil icon" id="notes-icon"></i>
                         Notes
                     </button>
                 </div>
-                
-                <!-- <button class="new-game-btn" id="special-btns">Special</button> -->
             </div>
         </div>
     </div>

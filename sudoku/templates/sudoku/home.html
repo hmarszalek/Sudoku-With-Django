@@ -2,38 +2,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        (function () {
+            // Theme
+            const theme = localStorage.getItem("theme");
+            if (theme && theme !== "default") {
+                document.documentElement.setAttribute("data-theme", theme);
+            }
+
+            // Dark Mode
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let mode = localStorage.getItem('mode');
+            if (mode && mode !== "default") {
+                document.documentElement.setAttribute('data-mode', mode);
+            }
+        })();
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to the homepage!</title>
+    <title>ThinkSharp</title>
     <link rel="stylesheet" href="{% static 'sudoku/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'sudoku/home_styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script type="module" src="{% static 'sudoku/scripts/script.js' %}"></script>
     <link rel="icon" href="{% static 'sudoku/icon/favicon-16x16.png' %}">
+    
+    <script>
+        const quotes = [
+            "“Your mind is your greatest weapon.”",
+            "“Small progress is still progress.”",
+            "“Focus is the new IQ.”",
+            "“Sudoku: mental gymnastics for brilliance.”"
+        ];
+        let i = 0;
+        setInterval(() => {
+            i = (i + 1) % quotes.length;
+            document.getElementById('quote-display').textContent = quotes[i];
+        }, 4000);
+    </script>
 </head>
 <body>
     <nav>
-        {% if user.is_authenticated %}
-            <div class="nav-container">
-                <div class="nav-center">
+        <div class="nav-container">
+            <div class="nav-center">
+                {% if user.is_authenticated %}
                     <a href="{% url 'solve_sudoku' %}">Solve Sudoku</a>
                     <a href="{% url 'history' %}">History</a>
                     <a href="{% url 'logout' %}" class="logout-link">Log Out</a>
-                </div>
-                <a href="{% url 'settings' %}" id="settings-gear" class="settings-gear"><i class="fas fa-gear"></i></a>
+                {% endif %}
             </div>
-        {% else %}
-            <a href="{% url 'login' %}">Log In</a>
-            <a href="{% url 'register' %}">Register</a>
-        {% endif %}
+            <a href="{% url 'settings' %}" id="settings-gear" class="settings-gear"><i class="fas fa-gear"></i></a>
+        </div>
     </nav>
 
+    
+    <!-- <div class="bg-animation" id="bg-numbers"></div> -->
+
     <div class="container" id="home-container">
-        <h1>Welcome to ThinkSharp!</h1>
-        {% if user.is_authenticated %}
-            <p>Welcome, {{ user.username }}! Enjoy creative and challanging games.</p>
-        {% else %}
-            <p>Please, <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to get started.</p>
-        {% endif %}
+        <div class="home-hero">
+            <h1>Welcome to <span class="brand-name">ThinkSharp</span></h1>
+            
+            <p class="quote" id="quote-display">"Your mind is your greatest weapon."</p>
+
+            {% if user.is_authenticated %}
+                <p class="welcome-msg">Hey <strong>{{ user.username }}</strong>, ready to challenge yourself?</p>
+                <div class="home-actions">
+                    <a href="{% url 'solve_sudoku' %}" class="btn-cta">Play Sudoku</a>
+                    <a href="{% url 'history' %}" class="btn-secondary">View History</a>
+                </div>
+            {% else %}
+                <p class="welcome-msg">Log in and start sharpening your logic and focus.</p>
+                <div class="home-actions">
+                    <a href="{% url 'register' %}" class="btn-cta">Register</a>
+                    <a href="{% url 'login' %}" class="btn-secondary">Log In</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <section class="dynamic-scroll">
+
+            <section class="stats">
+                <div class="stat-card">
+                    <h2 id="solved-puzzles" data-solved="{{ solved_count }}">0</h2>
+                    <p>Puzzles Solved</p>
+                </div>
+                <div class="stat-card">
+                    <h2 id="users-count" data-users="{{ user_count }}">0</h2>
+                    <p>Users</p>
+                </div>
+                <div class="stat-card">
+                    <h2 id="challenges-completed">0</h2>
+                    <p>Challenges Completed</p>
+                </div>
+            </section>
+
+            <section class="featured-puzzles animate-element">
+                <h2>Featured Puzzles</h2>
+                <div class="carousel">
+                    <div class="carousel-item animate-element">
+                        <h3>Classic Sudoku</h3>
+                        <p>Test your basic skills with the classic grid.</p>
+                        <a href="{% url 'solve_sudoku' %}" class="btn">Play Now</a>
+                    </div>
+                    <div class="carousel-item animate-element">
+                        <h3>Advanced Sudoku</h3>
+                        <p>For the true puzzle master. Can you solve it?</p>
+                        <a href="{% url 'solve_sudoku' %}" class="btn">Play Now</a>
+                    </div>
+                    <div class="carousel-item animate-element">
+                        <h3>Time Trials</h3>
+                        <p>Race against the clock. Can you beat your best time?</p>
+                        <a href="{% url 'solve_sudoku' %}" class="btn">Play Now</a>
+                    </div>
+                </div>
+            </section>
+            
+        </section>
+        
     </div>
 </body>
 </html>

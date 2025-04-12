@@ -1,6 +1,7 @@
 import { resetTimer, isGamePaused, isGameOver, toggleMenu, GameOver } from './timer.js';
 import { Sudoku, digitUsage } from './sudoku.js';
 import { closePopup } from './popup.js'
+import { autoCheck } from './script.js';
 
 var board;
 var difficultyLevel = 0;
@@ -17,14 +18,14 @@ const isMobile = window.screen.width <= 768;
 const BOARD_SIZE = 9;
 
 // ----------------- New Game Buttons --------------------
-// Delete later
-const newGameTempBtn = document.getElementById('temp'); 
-if (newGameTempBtn) {
-    newGameTempBtn.addEventListener('click', function() {
-        difficultyLevel = 3;
-        newGame(difficultyLevel);
-    });
-}
+// // Delete later
+// const newGameTempBtn = document.getElementById('temp'); 
+// if (newGameTempBtn) {
+//     newGameTempBtn.addEventListener('click', function() {
+//         difficultyLevel = 3;
+//         newGame(difficultyLevel);
+//     });
+// }
 
 // New game buttons
 const newGameEasyBtn = document.getElementById('easy');
@@ -43,13 +44,13 @@ if (newGameMediumBtn) {
     });
 }
 
-// const newGameHardBtn = document.getElementById('hard');
-// if (newGameHardBtn) {
-//     newGameHardBtn.addEventListener('click', function() {
-//         difficultyLevel = 2;
-//         newGame();
-//     });
-// }
+const newGameHardBtn = document.getElementById('hard');
+if (newGameHardBtn) {
+    newGameHardBtn.addEventListener('click', function() {
+        difficultyLevel = 2;
+        newGame();
+    });
+}
 // -------------------------------------------------------
 
 const newGamePopupBtn = document.getElementById('new-game-popup');
@@ -159,9 +160,10 @@ export function selectNumber(numberId) {
     }
 
     if(tileSelected) {
-        actionChosen(numberId, tileSelected);
-        tileSelected.classList.remove("tile-selected");
-        tileSelected = null;
+        if(actionChosen(numberId, tileSelected) === 0) {
+            tileSelected.classList.remove("tile-selected");
+            tileSelected = null;
+        }
     }
     else {
         selectNewDigit(numberId);
@@ -265,6 +267,14 @@ function actionChosen(numberId, tile) {
     if(numberId === "erase-btn") {
         numberId = "0";
     }
+
+    // If autoCheck is enabled, check if the number is correct
+    // If the number is not correct quit
+    if (autoCheck === true) {
+        if (solution[r][c] != parseInt(numberId)) {
+            return 1;
+        }
+    }
         
     if(numberId === tile.innerText) {
         removeSameDigit(r, c, parseInt(numberId), tile);
@@ -274,6 +284,8 @@ function actionChosen(numberId, tile) {
     }
 
     updateDigitUsageClasses();
+
+    return 0;
 }
 
 // Segregate used up digits

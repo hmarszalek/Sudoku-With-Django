@@ -30,13 +30,13 @@
 #options-container {
     width: 25%;
     height: var(--board-size);
-    margin-top: calc(min(calc(var(--tile-size) * 1.0), 100px) + 40px);
+    margin-top: calc(min(calc(var(--tile-size) * 1.0), 100px) + 10px);
     text-align: center;
     justify-content: center;
 }
 
 h3 {
-    font-size: calc(var(--tile-size) * 0.6);
+    font-size: calc(var(--tile-size) * 0.5);
     margin-bottom: 10px;
     color: var(--font-color);
 }
@@ -274,6 +274,7 @@ h3 {
     margin: auto;
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
 }
 
 #game-options {
@@ -282,6 +283,7 @@ h3 {
     margin: auto;
     justify-content: center;
     align-items: center;
+    margin-top: 30px;
 }
 
 .new-game-btn {
@@ -477,14 +479,15 @@ input:checked + .slider:before {
         justify-content: center;
         align-items: center;
         padding: 0px 30px;
-        margin-top: 100px;
+        margin-top: 50px;
         position: relative;
         display: flex;
     }
 
     #difficulty {
         width: 50%;
-        margin-top: 0px;
+        /* margin-top: 0px; */
+        /* margin-bottom: 0px !important; */
     }
 
     .new-game-btn {
@@ -499,7 +502,8 @@ input:checked + .slider:before {
     
     #game-options {
         width: 50%;
-        margin-top: 0px;
+        /* margin-top: 0px !important; */
+        /* padding-top: 0px !important; */
     }
 
     .toggle-container {

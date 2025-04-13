@@ -425,7 +425,7 @@ input:checked + .slider:before {
 /* ========================= Mobile Styles ========================= */
 @media only screen and (max-width: 1200px) {
     :root {
-        --board-size: 70vw;
+        --board-size: 65vw;
         --tile-size: calc(var(--board-size) / 9);
         --option-width: 90vw;
         --option-height: var(--board-size);
@@ -439,7 +439,7 @@ input:checked + .slider:before {
 
     #sudoku-container {
         width: 100%;
-        height: calc(var(--board-size) * 1.35);
+        height: calc(var(--board-size) * 1.4);
         margin-right: 0;
     }
 
@@ -453,24 +453,24 @@ input:checked + .slider:before {
     }
     
     #clock {
-        font-size: 48px;
-    }
-
-    #sudoku-title {
-        padding-top: 10px;
-        min-height: 80px;
-    }
-
-    #sudoku-title h1 {
-        font-size: 64px;
-    }
-
-    .tile, .number {
         font-size: 32px;
     }
 
+    #sudoku-title {
+        padding-top: 5px;
+        min-height: 60px;
+    }
+
+    #sudoku-title h1 {
+        font-size: 48px;
+    }
+
+    .tile, .number {
+        font-size: 24px;
+    }
+
     #pause-screen h2 {
-        font-size: 56px;
+        font-size: 42px;
     }
     
     #options-container {
@@ -478,8 +478,8 @@ input:checked + .slider:before {
         height: 280px;
         justify-content: center;
         align-items: center;
-        padding: 0px 30px;
-        margin-top: 50px;
+        padding: 0px 20px;
+        margin-top: 20px;
         position: relative;
         display: flex;
     }
@@ -491,8 +491,8 @@ input:checked + .slider:before {
     }
 
     .new-game-btn {
-        width: 400px;
-        height: 100px;
+        width: 200px;
+        height: 60px;
     }
 
     .new-game-btn:hover {
@@ -506,7 +506,7 @@ input:checked + .slider:before {
         /* padding-top: 0px !important; */
     }
 
-    .toggle-container {
+    /* .toggle-container {
         margin: 25px auto 35px auto;
     }
 
@@ -534,7 +534,7 @@ input:checked + .slider:before {
 
     input:checked + .slider:before {
         transform: translateX(48px);
-    }
+    } */
 
 
     #special {

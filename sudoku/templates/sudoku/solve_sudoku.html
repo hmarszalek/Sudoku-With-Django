@@ -4,23 +4,29 @@
 
 <head>
     <script>
-        (function () {
-            // Theme
-            const theme = localStorage.getItem("theme");
-            if (theme && theme !== "default") {
-                document.documentElement.setAttribute("data-theme", theme);
-            }
+        var highlightCells = "{{ settings.highlight_cells }}";
+        var highlightNumbers = "{{ settings.highlight_numbers }}";
+        var autoCheck = "{{ settings.auto_check }}";
 
-            // Dark Mode
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            let mode = localStorage.getItem('mode');
-            if (mode && mode !== "default") {
-                document.documentElement.setAttribute('data-mode', mode);
+        (function () {
+            const userSettings = {
+                theme: "{{ settings.theme }}",
+                color_scheme: "{{ settings.color_scheme }}"
+            };
+          
+            if (userSettings.theme) {
+                console.log("Theme set to:", userSettings.theme);
+                document.documentElement.setAttribute('data-theme', userSettings.theme);
+            }
+          
+            if (userSettings.color_scheme) {
+                document.documentElement.setAttribute('data-mode', userSettings.color_scheme);
             }
         })();
     </script>
 
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width initial-scale=1.0 user-scalable=no">
     <title>Sudoku</title>
 
@@ -73,13 +79,8 @@
                 <div id="numbers"></div>
                 <div id="notes"></div>
                 <br>
-
-                <form method="POST" style="display: none;">
-                    {% csrf_token %}
-                </form>
             </div>
         </div>
-
 
         <div id="options-container" class="prevent-text-select open">
             <h3>New Game</h3>

@@ -1,7 +1,6 @@
 import { resetTimer, isGamePaused, isGameOver, toggleMenu, GameOver } from './timer.js';
 import { Sudoku, digitUsage } from './sudoku.js';
 import { closePopup } from './popup.js'
-import { autoCheck } from './script.js';
 
 var board;
 var difficultyLevel = 0;
@@ -270,7 +269,7 @@ function actionChosen(numberId, tile) {
 
     // If autoCheck is enabled, check if the number is correct
     // If the number is not correct quit
-    if (autoCheck === true) {
+    if (autoCheck === 'True') {
         if (solution[r][c] != parseInt(numberId)) {
             return 1;
         }

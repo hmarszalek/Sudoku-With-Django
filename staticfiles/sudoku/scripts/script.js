@@ -1,5 +1,6 @@
 import { prepareBoard } from './board.js';
 import { newGame, startingBoard, solution } from './gameplay.js';
+import {} from './settings.js';
 
 const isMobile = window.screen.width <= 768;
 
@@ -9,20 +10,12 @@ export const isOnHistory = currentPath.includes('/history');
 export const isOnSettings = currentPath.includes('/settings');
 export const isOnHome = currentPath === '/';
 
-// Gameplay variables
-export var autoCheck = true;
-
 window.onload = function() {
-    // Theme
-
     if (isOnSolveSudoku) {
         solveSudokuPage();
     }
     if (isOnHistory) {
         historyPage();
-    }
-    if (isOnSettings) {
-        settingsPage();
     }
     if (!isMobile && isOnHome) {
         homePage();
@@ -36,7 +29,6 @@ window.onload = function() {
     }
 
     settingsLink?.addEventListener('click', function (e) {
-        console.log("settings link clicked");
         const currentPath = window.location.pathname;
         const isOnSettings = currentPath.includes('/settings');
         const previousPage = sessionStorage.getItem('previousPage') || '/';
@@ -51,7 +43,7 @@ window.onload = function() {
 }
 
 export function sendSolvedSudoku() {
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrfToken = document.querySelector('[name=csrf-token]').content;
     
     const dataToSend = {
         name: 'Sudoku #' + Date.now(),
@@ -61,6 +53,34 @@ export function sendSolvedSudoku() {
     };
 
     fetch('/solve_sudoku/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Saved successfully!', data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+export function sendUserPreferences(highlightCells, highlightNumbers, autoCheck) {
+    const csrfToken = document.querySelector('[name=csrf-token]').content;
+    
+    const dataToSend = {
+        theme: document.documentElement.getAttribute('data-theme'),
+        color_scheme: document.documentElement.getAttribute('data-mode'),
+        highlight_cells: highlightCells,
+        highlight_numbers: highlightNumbers,
+        auto_check: autoCheck,
+    };
+
+    fetch('/settings/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -152,7 +172,6 @@ function homePage() {
 
 // ------------------ Solve Sudoku ------------------------
 function solveSudokuPage() {
-    console.log("solve sudoku page");
     prepareBoard("board");
     if(!isMobile) {
         newGame(0);
@@ -183,7 +202,6 @@ function historyPage() {
         var boardName = container.getAttribute('data-name');
         var board = JSON.parse(container.getAttribute('data-board'));
         var solution = JSON.parse(container.getAttribute('data-solution'));
-        console.log(boardName);
         prepareBoard("board" + boardName, board, solution);
     });
 }
@@ -225,71 +243,3 @@ async function deleteSudoku(sudokuId) {
     }
 }
 // --------------------------------------------------------
-
-
-// ------------------ Settings page ------------------------
-// should be on load - change to onload
-function settingsPage() {
-    // Theme Switcher
-    // const themeSwitcher = document.getElementById('theme-selector');
-    // if (!themeSwitcher) return;
-      
-    // themeSwitcher.value = document.documentElement.getAttribute('data-theme');
-      
-    // themeSwitcher.addEventListener('change', () => {
-    //     // console.log("theme switcher changed");
-    //     const newTheme = themeSwitcher.value;
-    //     document.documentElement.setAttribute('data-theme', newTheme);
-    //     localStorage.setItem('theme', newTheme);
-    // });
-
-    // document.addEventListener("DOMContentLoaded", function () {
-        const themeCards = document.querySelectorAll('.theme-card');
-        const colorSchemeToggle = document.getElementById('color-scheme-toggle');
-        
-        // Add event listener for each theme card
-        themeCards.forEach(card => {
-          card.addEventListener('click', () => {
-            // Remove the 'selected' class from all cards
-            themeCards.forEach(c => c.classList.remove('selected'));
-            
-            // Add 'selected' class to the clicked card
-            card.classList.add('selected');
-            
-            // Get the selected theme
-            const selectedTheme = card.getAttribute('data-theme');
-            
-            // Apply the selected theme to the root element
-            document.documentElement.setAttribute('data-theme', selectedTheme);
-            localStorage.setItem('theme', selectedTheme);
-          });
-        });
-      
-        // Load theme from localStorage if available
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-          const selectedCard = document.querySelector(`.theme-card[data-theme="${savedTheme}"]`);
-          if (selectedCard) {
-            selectedCard.classList.add('selected');
-          }
-        }
-    //   });
-      
-
-    // Dark Mode switch
-    const themeToggleButton = document.getElementById('color-scheme-toggle');
-    if (!themeToggleButton) return;
-    
-    let currentMode = document.documentElement.getAttribute('data-mode');
-    themeToggleButton.textContent = currentMode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
-
-    themeToggleButton.addEventListener('click', () => {
-        let currentMode = document.documentElement.getAttribute('data-mode');
-        const newMode = currentMode === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-mode', newMode);
-        themeToggleButton.textContent = newMode === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
-        localStorage.setItem('mode', newMode);
-    });
-}
-
-// ---------------------------------------------------------

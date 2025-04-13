@@ -16,3 +16,14 @@ class SolvedSudoku(models.Model):
 
     def __str__(self):
         return f"{self.name}-{self.user.username}"
+
+class UserSettings(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    theme = models.CharField(max_length=100, default='default')
+    color_scheme = models.CharField(max_length=50, default='light')
+    highlight_cells = models.BooleanField(default=False)
+    highlight_numbers = models.BooleanField(default=False)
+    auto_check = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"settings-for-{self.user.username}"

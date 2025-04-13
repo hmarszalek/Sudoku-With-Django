@@ -1,3 +1,5 @@
+/* ====================== General Styles ========================== */
+
 .settings-section {
   margin-top: 30px;
   padding: 20px;
@@ -17,7 +19,41 @@
     margin-bottom: 10px;
 }
 
-/* Account Options */
+button {
+    background-color: var(--theme-color);
+    min-width: 100px;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--theme-color-hover);
+    transform: translateY(-2px);
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* ====================== Logout Section ========================== */
+
+.logout-section {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.logout-btn {
+    min-width: 150px
+}
+
+/* ====================== Account Section ========================== */
+
 .account-options {
     display: flex;
     flex-direction: column;
@@ -31,6 +67,7 @@
     font-size: 18px;
     text-decoration: none;
     transition: all 0.3s ease;
+    color: var(--theme-color);
 }
 
 .settings-link i {
@@ -68,27 +105,6 @@
     background: linear-gradient(145deg, #c82333, #e63946);
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Logout Section */
-.logout-section {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.logout-btn {
-    font-size: 18px;
-    background-color: var(--theme-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background-color 0.3s ease; /* Add background-color transition */
-}
-
-.logout-btn:hover {
-    background-color: var(--theme-color-hover);
-    color: white;
 }
 
 /* ====================== Themes Section ========================== */
@@ -210,3 +226,4 @@ input[type="checkbox"]:focus-visible {
 .gameplay-options {
     margin-top: 20px;
 }
+

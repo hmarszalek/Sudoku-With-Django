@@ -4,17 +4,18 @@
 <head>
     <script>
         (function () {
-            // Theme
-            const theme = localStorage.getItem("theme");
-            if (theme && theme !== "default") {
-                document.documentElement.setAttribute("data-theme", theme);
+            const userSettings = {
+                theme: "{{ settings.theme }}",
+                color_scheme: "{{ settings.color_scheme }}"
+            };
+          
+            if (userSettings.theme) {
+                console.log("Theme set to:", userSettings.theme);
+                document.documentElement.setAttribute('data-theme', userSettings.theme);
             }
-
-            // Dark Mode
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            let mode = localStorage.getItem('mode');
-            if (mode && mode !== "default") {
-                document.documentElement.setAttribute('data-mode', mode);
+          
+            if (userSettings.color_scheme) {
+                document.documentElement.setAttribute('data-mode', userSettings.color_scheme);
             }
         })();
     </script>

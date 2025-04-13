@@ -5,26 +5,24 @@
 <head>
     <script>
         (function () {
-            // Theme
-            const theme = localStorage.getItem("theme");
-            if (theme && theme !== "default") {
-                document.documentElement.setAttribute("data-theme", theme);
+            const userSettings = {
+                theme: "{{ settings.theme }}",
+                color_scheme: "{{ settings.color_scheme }}"
+            };
+          
+            if (userSettings.theme) {
+                console.log("Theme set to:", userSettings.theme);
+                document.documentElement.setAttribute('data-theme', userSettings.theme);
             }
-
-            // Dark Mode
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            let mode = localStorage.getItem('mode');
-            if (mode && mode !== "default") {
-                document.documentElement.setAttribute('data-mode', mode);
+          
+            if (userSettings.color_scheme) {
+                document.documentElement.setAttribute('data-mode', userSettings.color_scheme);
             }
-            // else {
-            //     mode = prefersDark ? 'dark' : 'light';
-            // }
-            // document.documentElement.setAttribute('color-scheme', mode);
         })();
     </script>
 
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width initial-scale=1.0 user-scalable=no">
     <title>Sudoku</title>
 
@@ -48,9 +46,9 @@
 
         <!-- Logout Section -->
         <div class="logout-section">
-            <a href="{% url 'logout' %}" class="logout-btn">
+            <button href="{% url 'logout' %}" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Log Out
-            </a>
+            </button>
         </div>
         
         <!-- Account Managment Section -->
@@ -100,17 +98,17 @@
             <div class="gameplay-options prevent-text-select">
                 <!-- Highlight row, column and box your current posistion itersects with -->
                 <label for="highlight-cells">
-                    <input type="checkbox" id="highlight-cells" unchecked>
+                    <input type="checkbox" id="highlight-cells" {% if settings.highlight_cells %}checked{% endif %}>
                     Highlight Cells
                 </label>
                 <!-- Highlight the selected number in the grid -->
                 <label for="highlight-numbers">
-                    <input type="checkbox" id="highlight-numbers" unchecked>
+                    <input type="checkbox" id="highlight-numbers" {% if settings.highlight_numbers %}checked{% endif %}>
                     Highlight Numbers
                 </label>
                 <!-- Dont let user put in wrong number -->
                 <label for="auto-check">
-                    <input type="checkbox" id="auto-check" checked>
+                    <input type="checkbox" id="auto-check" {% if settings.auto_check %}checked{% endif %}>
                     Auto-Check
                 </label>
                 <!-- <label for="auto-save">
@@ -118,6 +116,8 @@
                     Auto-Save
                 </label> -->
             </div>
+
+            <button id="save-settings-btn">Save</button>
         </div>
     </div>
 </body>

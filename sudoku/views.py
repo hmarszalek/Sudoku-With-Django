@@ -5,17 +5,20 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.dateparse import parse_duration
-from datetime import timedelta
-from django.http import JsonResponse
-from .forms import RegisterForm, ChangeUsernameForm
-from .models import SolvedSudoku
-import json
 from django.utils.timezone import now
+from datetime import timedelta
+
+from .forms import RegisterForm, ChangeUsernameForm
+from .models import SolvedSudoku, UserSettings
+
+import json
+from django.http import JsonResponse
 
 def home(request):
     user_count = User.objects.count()
     solved_count = SolvedSudoku.objects.count()
-    return render(request, "sudoku/home.html", {'user_count': user_count, 'solved_count': solved_count})
+    user_settings = UserSettings.objects.filter(user=request.user).first() if request.user.is_authenticated else None
+    return render(request, "sudoku/home.html", {'user_count': user_count, 'solved_count': solved_count, 'settings': user_settings})
 
 def register_view(request):
     if request.method == "POST":
@@ -45,6 +48,7 @@ def logout_view(request):
 
 @login_required
 def solve_sudoku(request):
+    user_settings = UserSettings.objects.filter(user=request.user).first()
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -64,12 +68,13 @@ def solve_sudoku(request):
             return JsonResponse({"message": "Solved Sudoku saved successfully!"})
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
-    return render(request, "sudoku/solve_sudoku.html")
+    return render(request, "sudoku/solve_sudoku.html", {"settings": user_settings})
 
 @login_required
 def sudoku_history(request):
     solved = SolvedSudoku.objects.filter(user=request.user).order_by("-date_solved")
-    return render(request, "sudoku/history.html", {"solved_puzzles": solved})
+    user_settings = UserSettings.objects.filter(user=request.user).first()
+    return render(request, "sudoku/history.html", {"solved_puzzles": solved, "settings": user_settings})
 
 @login_required
 def remove_sudoku(request, sudoku_id):
@@ -79,7 +84,28 @@ def remove_sudoku(request, sudoku_id):
 
 @login_required
 def settings(request):
-    return render(request, "sudoku/settings.html")
+    user_settings = UserSettings.objects.filter(user=request.user).first()
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            theme = data.get('theme')
+            color_scheme = data.get('color_scheme')
+            highlight_cells = data.get('highlight_cells') == 'false'
+            highlight_numbers = data.get('highlight_numbers') == 'false'
+            auto_check = data.get('auto_check')
+
+            settings, created = UserSettings.objects.get_or_create(user=request.user)
+            settings.theme = theme
+            settings.color_scheme = color_scheme
+            settings.highlight_cells = highlight_cells
+            settings.highlight_numbers = highlight_numbers
+            settings.auto_check = auto_check
+            settings.save()
+
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "error": str(e)})
+    return render(request, "sudoku/settings.html", {'settings': user_settings})
 
 @login_required
 def change_username(request):

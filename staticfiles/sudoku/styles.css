@@ -127,7 +127,12 @@ p, label {
 /* ========================= Links Styling ========================= */
 a {
     text-decoration: none;
-    color: white;
+    color: var(--theme-color);
+}
+
+a:hover {
+    color: var(--theme-color-hover);
+    text-decoration: underline;
 }
 
 /* ========================= Navbar Styles ========================= */
@@ -174,6 +179,7 @@ nav a {
 
 nav a:hover {
     color: white;
+    text-decoration: none;
     transform: translateY(-2px) scale(1.05);
 }
 

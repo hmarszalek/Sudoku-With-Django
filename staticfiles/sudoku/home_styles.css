@@ -1,3 +1,7 @@
+a:hover {
+    text-decoration: none;
+}
+
 .home-hero {
     margin: 30px auto;
     padding: 30px 30px;
@@ -183,4 +187,11 @@
 .animate-element.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ========================= Mobile Styles ========================= */
+@media only screen and (max-width: 1200px) {
+    .animate-element {
+        opacity: 1 !important;
+    }
 }

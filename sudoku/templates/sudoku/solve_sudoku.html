@@ -52,7 +52,6 @@
     <div class="container" id="solve-sudoku-container" class="prevent-text-select">
         <button id="options-toggle-btn" class="option-toggle-btn" aria-label="Open options menu">
             <i class="fas fa-bars"></i>
-            <!-- <img id="menu-icon" src="{% static 'sudoku/images/menu.png' %}" alt="Menu"> -->
         </button>
         <div id="clock-container" class="prevent-text-select">
             <div id="clock-box">
@@ -61,13 +60,11 @@
             <button type="button" id="pause-btn" class="resumed" aria-label="Pause game">
                 <i id="pause-icon" class="fas fa-pause"></i>
                 <i id="play-icon" class="fas fa-play resumed"></i>
-                <!-- <img id="pause-icon" src="{% static 'sudoku/images/pause.png' %}" alt="Pause">
-                <img id="play-icon" class="resumed" src="{% static 'sudoku/images/play.png' %}" alt="Resume"> -->
             </button>
         </div>
 
         <div id="sudoku-container" class="prevent-text-select">
-            <div id="title">
+            <div id="sudoku-title">
                 <h1>Sudoku</h1>
             </div>
             <div id="sudoku-board">
@@ -83,8 +80,8 @@
         </div>
 
         <div id="options-container" class="prevent-text-select open">
-            <h3>New Game</h3>
             <div id="difficulty">
+                <h3>New Game</h3>
                 <button class="new-game-btn" id="easy">Easy</button><br>
                 <button class="new-game-btn" id="medium">Medium</button><br>
                 <button class="new-game-btn" id="hard">Hard</button><br>
@@ -92,8 +89,8 @@
             </div>
 
             <div id="game-options">
-                <h3>Options</h3>
                 <div class="options-onoff">
+                    <h3>Options</h3>
                     <div class="toggle-container" id="timer-switch-container">
                         <label class="toggle-label" for="timer-switch">Timer:</label>
                         <label class="switch">
@@ -101,6 +98,7 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                    
                     <div class="toggle-container" id="special-switch-container">
                         <label class="toggle-label" for="special-switch">Special:</label>
                         <label class="switch">

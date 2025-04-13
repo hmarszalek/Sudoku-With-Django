@@ -17,7 +17,7 @@ if(themeCards) {
         card.addEventListener('click', () => {
             const theme = card.getAttribute('data-theme');
             applyTheme(theme);
-            sendUserPreferences(highlightCells, highlightNumbers, autoCheck);
+            sendUserPreferences();
         });
     });
 }
@@ -32,7 +32,7 @@ if (toggleButton) {
         toggleButton.textContent = newMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode';
         localStorage.setItem('mode', newMode);
         applyMode(newMode);
-        sendUserPreferences(highlightCells, highlightNumbers, autoCheck);
+        sendUserPreferences();
     });
 }
 
@@ -66,6 +66,11 @@ if (saveButton) {
         let highlightCells = document.getElementById('highlight-cells').checked;
         let highlightNumbers = document.getElementById('highlight-numbers').checked;
         let autoCheck = document.getElementById('auto-check').checked;
-        sendUserPreferences(highlightCells, highlightNumbers, autoCheck);
+
+        document.getElementById('highlight-cells').setAttribute('data-boolean', highlightCells);
+        document.getElementById('highlight-numbers').setAttribute('data-boolean', highlightNumbers);
+        document.getElementById('auto-check').setAttribute('data-boolean', autoCheck);
+
+        sendUserPreferences();
     });
 }

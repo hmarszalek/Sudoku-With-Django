@@ -69,16 +69,22 @@ export function sendSolvedSudoku() {
     });
 }
 
-export function sendUserPreferences(highlightCells, highlightNumbers, autoCheck) {
+export function sendUserPreferences() {
     const csrfToken = document.querySelector('[name=csrf-token]').content;
+
+    var highlightCells = document.getElementById('highlight-cells').getAttribute('data-boolean');
+    var highlightNumbers = document.getElementById('highlight-numbers').getAttribute('data-boolean');
+    var autoCheck = document.getElementById('auto-check').getAttribute('data-boolean');
     
     const dataToSend = {
         theme: document.documentElement.getAttribute('data-theme'),
         color_scheme: document.documentElement.getAttribute('data-mode'),
-        highlight_cells: highlightCells,
-        highlight_numbers: highlightNumbers,
-        auto_check: autoCheck,
+        highlight_cells: highlightCells === 'true' ? true : false,
+        highlight_numbers: highlightNumbers === 'true' ? true : false,
+        auto_check: autoCheck === 'true' ? true : false,
     };
+
+    console.log('Sending user preferences:', dataToSend);
 
     fetch('/settings/', {
         method: 'POST',

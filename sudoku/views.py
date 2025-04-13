@@ -90,8 +90,8 @@ def settings(request):
             data = json.loads(request.body)
             theme = data.get('theme')
             color_scheme = data.get('color_scheme')
-            highlight_cells = data.get('highlight_cells') == 'false'
-            highlight_numbers = data.get('highlight_numbers') == 'false'
+            highlight_cells = data.get('highlight_cells')
+            highlight_numbers = data.get('highlight_numbers')
             auto_check = data.get('auto_check')
 
             settings, created = UserSettings.objects.get_or_create(user=request.user)

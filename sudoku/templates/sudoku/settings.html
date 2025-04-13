@@ -46,9 +46,9 @@
 
         <!-- Logout Section -->
         <div class="logout-section">
-            <button href="{% url 'logout' %}" class="logout-btn">
+            <a href="{% url 'logout' %}" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Log Out
-            </button>
+            </a>
         </div>
         
         <!-- Account Managment Section -->
@@ -89,7 +89,13 @@
                 </div>
             </div>
 
-            <button id="color-scheme-toggle">Switch to Dark Mode</button>
+            <button id="color-scheme-toggle">
+                {% if settings.color_scheme == "light" %}
+                    Switch to Dark Mode
+                {% else %}
+                    Switch to Light Mode
+                {% endif %}
+            </button>
         </div>
 
         <div class="settings-section">
@@ -98,17 +104,23 @@
             <div class="gameplay-options prevent-text-select">
                 <!-- Highlight row, column and box your current posistion itersects with -->
                 <label for="highlight-cells">
-                    <input type="checkbox" id="highlight-cells" {% if settings.highlight_cells %}checked{% endif %}>
+                    <input type="checkbox" id="highlight-cells" 
+                            data-boolean="{% if settings.highlight_cells %}true{% endif %}" 
+                            {% if settings.highlight_cells %}checked{% endif %}>
                     Highlight Cells
                 </label>
                 <!-- Highlight the selected number in the grid -->
                 <label for="highlight-numbers">
-                    <input type="checkbox" id="highlight-numbers" {% if settings.highlight_numbers %}checked{% endif %}>
+                    <input type="checkbox" id="highlight-numbers" 
+                            data-boolean="{% if settings.highlight_numbers %}true{% endif %}" 
+                            {% if settings.highlight_numbers %}checked{% endif %}>
                     Highlight Numbers
                 </label>
                 <!-- Dont let user put in wrong number -->
                 <label for="auto-check">
-                    <input type="checkbox" id="auto-check" {% if settings.auto_check %}checked{% endif %}>
+                    <input type="checkbox" id="auto-check" 
+                            data-boolean="{% if settings.auto_check %}true{% endif %}" 
+                            {% if settings.auto_check %}checked{% endif %}>
                     Auto-Check
                 </label>
                 <!-- <label for="auto-save">

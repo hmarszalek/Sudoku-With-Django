@@ -180,7 +180,8 @@ function homePage() {
 function solveSudokuPage() {
     prepareBoard("board");
     if(!isMobile) {
-        newGame(0);
+        const difficulty = localStorage.getItem('sudoku_difficulty') || 0;
+        newGame(parseInt(difficulty));
     }
 }
 

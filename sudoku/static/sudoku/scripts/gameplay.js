@@ -47,7 +47,7 @@ const newGameHardBtn = document.getElementById('hard');
 if (newGameHardBtn) {
     newGameHardBtn.addEventListener('click', function() {
         difficultyLevel = 2;
-        newGame();
+        newGame(difficultyLevel);
     });
 }
 // -------------------------------------------------------

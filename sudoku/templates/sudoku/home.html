@@ -10,7 +10,6 @@
             };
           
             if (userSettings.theme) {
-                console.log("Theme set to:", userSettings.theme);
                 document.documentElement.setAttribute('data-theme', userSettings.theme);
             }
           
@@ -104,12 +103,12 @@
                     <div class="carousel-item animate-element">
                         <h3>Classic Sudoku</h3>
                         <p>Test your basic skills with the classic grid.</p>
-                        <a href="{% url 'solve_sudoku' %}" class="btn">Play Now</a>
+                        <a href="#" class="btn" onclick="setDifficulty(0)">Play Now</a>
                     </div>
                     <div class="carousel-item animate-element">
                         <h3>Advanced Sudoku</h3>
                         <p>For the true puzzle master. Can you solve it?</p>
-                        <a href="{% url 'solve_sudoku' %}" class="btn">Play Now</a>
+                        <a href="#" class="btn" onclick="setDifficulty(1)">Play Now</a>
                     </div>
                     <div class="carousel-item animate-element">
                         <h3>Time Trials</h3>
@@ -122,5 +121,12 @@
         </section>
         
     </div>
+
+    <script>
+        function setDifficulty(difficulty) {
+            localStorage.setItem('sudoku_difficulty', difficulty);
+            window.location.href = '/solve_sudoku/';
+        }
+    </script>
 </body>
 </html>
